@@ -80,6 +80,7 @@ const PlanelForm = ({ email, goToFirstTab, goToSecondTab }) => {
       dateOfBirth: dateOfBirth.format("YYYY-MM-DD"),
       acceptTheTermsOfUse,
     };
+    console.log(userData);
     dispatch(saveNewUser(userData));
   };
   return (

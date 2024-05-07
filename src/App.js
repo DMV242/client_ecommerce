@@ -4,7 +4,7 @@ import Login from "../src/pages/Login";
 import Profile from "./pages/Profile";
 import Player from "./pages/Player";
 import Admin from "./pages/Admin";
-import Footer from "./components/Navigation/Footer";
+
 
 function App() {
   return (
@@ -17,7 +17,7 @@ function App() {
           <Route path="/admin" element={<Admin />} />
           <Route path="/player/:id" element={<Player />} />
         </Routes>
-        <Footer />
+
       </Router>
     </>
   );

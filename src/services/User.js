@@ -1,4 +1,5 @@
 import axios from "axios";
+import { getAllUsers } from "../redux/slice/User";
 
 const BASE_URL = "http://127.0.0.1:8000";
 
@@ -35,6 +36,11 @@ const User = {
   },
   updatePasswordUser(data) {
     return axios.post(`${BASE_URL}/reset-password`, data);
+  },
+  getAllUsers(token) {
+    return axios.get(`${BASE_URL}/users`, {
+      headers: { Authorization: `Bearer ${token}` }
+    });
   },
   deleteUser(userId) {
     return axios.delete(`${BASE_URL}/delete-user-by-id`, {

@@ -19,7 +19,7 @@ import { styled } from "@mui/material/styles";
 import FavoriteBorderIcon from "@mui/icons-material/FavoriteBorder";
 import WorkOutlineIcon from "@mui/icons-material/WorkOutline";
 import CloseIcon from "@mui/icons-material/Close";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { useDispatch, useSelector } from "react-redux";
 import {
   logoutUser,
@@ -28,7 +28,7 @@ import {
 } from "../../redux/slice/UserConnected";
 import DrawerList from "./MobileNavBar";
 
-const pages = ["Nouveautés", "Tendances", "Joueurs", "Promotions"];
+const pages = ["Documentation de l'API Ollosa.shop"];
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -265,19 +265,21 @@ const NavBar = () => {
               <Box sx={{ flexGrow: 1, display: { xs: "none", md: "flex" } }}>
                 {pages.map((page) => (
                   <Button key={page}>
-                    <Typography
-                      sx={{
-                        fontFamily:
-                          "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-                        fontWeight: 600,
-                        fontSize: "16px",
-                        color: "#111111",
-                        lineHeight: "24px",
-                        textTransform: "none",
-                      }}
-                    >
-                      {page}
-                    </Typography>
+                    <Link to={"http://localhost:8000/docs"} style={{ textDecoration: "none" }}>
+                      <Typography
+                        sx={{
+                          fontFamily:
+                            "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+                          fontWeight: 600,
+                          fontSize: "16px",
+                          color: "#111111",
+                          lineHeight: "24px",
+                          textTransform: "none",
+                        }}
+                      >
+                        {page}
+                      </Typography>
+                    </Link>
                   </Button>
                 ))}
               </Box>
@@ -331,7 +333,7 @@ const NavBar = () => {
               />
             </Search>
           </Box>
-        </DialogContent> 
+        </DialogContent>
       </Dialog>
     </>
   );

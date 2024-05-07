@@ -1,0 +1,10 @@
+
+.wrapper{
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+.hero{
+    padding: 20px;
+    width: 1200px;
+}

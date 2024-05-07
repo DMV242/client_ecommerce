@@ -58,6 +58,7 @@ const PlanelEmail = ({ email, setEmail, handleSubmit }) => {
           headers: { Authorization: `Bearer ${accessToken}` },
         }
       );
+
       const { email, given_name, family_name } = response.data;
       dispatch(
         loginGoogleUser({

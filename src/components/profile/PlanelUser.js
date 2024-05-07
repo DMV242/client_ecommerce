@@ -1,4 +1,4 @@
-import { Box, Button, Divider, TextField, Typography } from "@mui/material";
+import { Box, Button, Divider, TextField, Typography, Snackbar, Alert } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import {
   deleteUser,
@@ -15,6 +15,7 @@ import dayjs from "dayjs";
 const PlanelUser = ({ user }) => {
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const [open, setOpen] = useState(false);
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [email, setEmail] = useState("");
@@ -105,187 +106,44 @@ const PlanelUser = ({ user }) => {
     dispatch(postInfoUser({ data: userData, token }));
   };
 
+  function handleClose() {
+    setOpen(false);
+  }
+
   return (
-    <Box
-      sx={{
-        display: "flex",
-        flexDirection: "column",
-        width: { md: "40%", xs: "90%" },
-      }}
-    >
+    <>
+      <Snackbar open={open} autoHideDuration={6000} onClose={handleClose}>
+        <Alert
+          onClose={handleClose}
+          severity="error"
+          variant="filled"
+          sx={{ width: '100%' }}
+        >
+          Vous ne disposez pas des droits pour voir cette page
+        </Alert>
+      </Snackbar>
       <Box
         sx={{
           display: "flex",
-          flexDirection: "row",
-          justifyContent: "center",
-          alignItems: "center",
-          mt: 4,
-          mb: 2,
+          flexDirection: "column",
+          width: { md: "40%", xs: "90%" },
         }}
       >
-        <Typography
+        <Box
           sx={{
-            fontFamily:
-              "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-            fontWeight: 600,
-            fontSize: "20px",
-            color: "#000000",
-            lineHeight: "32px",
-            textTransform: "none",
-            letterSpacing: "normal",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "center",
+            alignItems: "center",
+            mt: 4,
+            mb: 2,
           }}
         >
-          Information compte {user?.accountGoogle && "Google"}
-          {user?.isAdmin && "Administrateur"}
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 4,
-        }}
-      >
-        <Typography
-          sx={{
-            fontFamily:
-              "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-            fontWeight: 600,
-            fontSize: "20px",
-            color: "#000000",
-            lineHeight: "32px",
-            textTransform: "none",
-            letterSpacing: "normal",
-          }}
-        >
-          Prénom et Nom de famille
-        </Typography>
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "row",
-          mt: 1,
-          width: "100%",
-        }}
-      >
-        <TextField
-          label="Prénom"
-          variant="outlined"
-          required
-          fullWidth
-          sx={{ width: "49%" }}
-          value={firstName}
-          onChange={(e) => setFirstName(e.target.value)}
-        />
-        <TextField
-          label="Nom de famille"
-          variant="outlined"
-          required
-          fullWidth
-          sx={{ width: "49%" }}
-          value={lastName}
-          onChange={(e) => setLastName(e.target.value)}
-        />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 4,
-        }}
-      >
-        <Typography
-          sx={{
-            fontFamily:
-              "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-            fontWeight: 600,
-            fontSize: "20px",
-            color: "#000000",
-            lineHeight: "32px",
-            textTransform: "none",
-            letterSpacing: "normal",
-          }}
-        >
-          Adresse e-mail
-        </Typography>
-        <Typography
-          sx={{
-            fontFamily:
-              "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-            fontWeight: 500,
-            fontSize: "16px",
-            color: "#757575",
-            lineHeight: "24px",
-            textTransform: "none",
-            letterSpacing: "normal",
-            textDecoration: "underline",
-            cursor: "pointer",
-          }}
-        >
-          Modifier
-        </Typography>
-      </Box>
-      <TextField
-        label="Adresse e-mail"
-        variant="outlined"
-        fullWidth
-        sx={{ mt: 1 }}
-        value={email}
-        onChange={(e) => setEmail(e.target.value)}
-        InputProps={{
-          readOnly: true,
-        }}
-      />
-      {!user?.accountGoogle && (
-        <>
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "row",
-              justifyContent: "space-between",
-              mt: 4,
-            }}
-          >
-            <Typography
-              sx={{
-                fontFamily:
-                  "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-                fontWeight: 600,
-                fontSize: "20px",
-                color: "#000000",
-                lineHeight: "32px",
-                textTransform: "none",
-                letterSpacing: "normal",
-              }}
-            >
-              Mot de passe
-            </Typography>
-            <Typography
-              sx={{
-                fontFamily:
-                  "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-                fontWeight: 500,
-                fontSize: "16px",
-                color: "#757575",
-                lineHeight: "24px",
-                textTransform: "none",
-                letterSpacing: "normal",
-                textDecoration: "underline",
-                cursor: "pointer",
-              }}
-            >
-              Modifier
-            </Typography>
-          </Box>
           <Typography
             sx={{
               fontFamily:
                 "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-              fontWeight: 500,
+              fontWeight: 600,
               fontSize: "20px",
               color: "#000000",
               lineHeight: "32px",
@@ -293,311 +151,475 @@ const PlanelUser = ({ user }) => {
               letterSpacing: "normal",
             }}
           >
-            ••••••••••••••••
+            Information compte {user?.accountGoogle && "Google"}
+            {user?.isAdmin && "Administrateur"}
           </Typography>
-        </>
-      )}
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 4,
-        }}
-      >
-        <Typography
+        </Box>
+        <Box
           sx={{
-            fontFamily:
-              "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-            fontWeight: 600,
-            fontSize: "20px",
-            color: "#000000",
-            lineHeight: "32px",
-            textTransform: "none",
-            letterSpacing: "normal",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 4,
           }}
         >
-          Numéro de téléphone
-        </Typography>
-      </Box>
-      <TextField
-        label="Numéro de téléphone"
-        variant="outlined"
-        required
-        fullWidth
-        sx={{ mt: 1 }}
-        value={phoneNumber}
-        onChange={(e) => setPhoneNumber(e.target.value)}
-      />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 4,
-        }}
-      >
-        <Typography
+          <Typography
+            sx={{
+              fontFamily:
+                "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+              fontWeight: 600,
+              fontSize: "20px",
+              color: "#000000",
+              lineHeight: "32px",
+              textTransform: "none",
+              letterSpacing: "normal",
+            }}
+          >
+            Prénom et Nom de famille
+          </Typography>
+        </Box>
+        <Box
           sx={{
-            fontFamily:
-              "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-            fontWeight: 600,
-            fontSize: "20px",
-            color: "#000000",
-            lineHeight: "32px",
-            textTransform: "none",
-            letterSpacing: "normal",
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row",
+            mt: 1,
+            width: "100%",
           }}
         >
-          Date de naissance
-        </Typography>
-      </Box>
-      <LocalizationProvider
-        dateAdapter={AdapterDayjs}
-        sx={{ width: "100%", mt: 1 }}
-      >
-        <DatePicker
+          <TextField
+            label="Prénom"
+            variant="outlined"
+            required
+            fullWidth
+            sx={{ width: "49%" }}
+            value={firstName}
+            onChange={(e) => setFirstName(e.target.value)}
+          />
+          <TextField
+            label="Nom de famille"
+            variant="outlined"
+            required
+            fullWidth
+            sx={{ width: "49%" }}
+            value={lastName}
+            onChange={(e) => setLastName(e.target.value)}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 4,
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily:
+                "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+              fontWeight: 600,
+              fontSize: "20px",
+              color: "#000000",
+              lineHeight: "32px",
+              textTransform: "none",
+              letterSpacing: "normal",
+            }}
+          >
+            Adresse e-mail
+          </Typography>
+          <Typography
+            sx={{
+              fontFamily:
+                "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+              fontWeight: 500,
+              fontSize: "16px",
+              color: "#757575",
+              lineHeight: "24px",
+              textTransform: "none",
+              letterSpacing: "normal",
+              textDecoration: "underline",
+              cursor: "pointer",
+            }}
+          >
+            Modifier
+          </Typography>
+        </Box>
+        <TextField
+          label="Adresse e-mail"
+          variant="outlined"
+          fullWidth
+          sx={{ mt: 1 }}
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          InputProps={{
+            readOnly: true,
+          }}
+        />
+        {!user?.accountGoogle && (
+          <>
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "row",
+                justifyContent: "space-between",
+                mt: 4,
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily:
+                    "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+                  fontWeight: 600,
+                  fontSize: "20px",
+                  color: "#000000",
+                  lineHeight: "32px",
+                  textTransform: "none",
+                  letterSpacing: "normal",
+                }}
+              >
+                Mot de passe
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily:
+                    "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+                  fontWeight: 500,
+                  fontSize: "16px",
+                  color: "#757575",
+                  lineHeight: "24px",
+                  textTransform: "none",
+                  letterSpacing: "normal",
+                  textDecoration: "underline",
+                  cursor: "pointer",
+                }}
+              >
+                Modifier
+              </Typography>
+            </Box>
+            <Typography
+              sx={{
+                fontFamily:
+                  "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+                fontWeight: 500,
+                fontSize: "20px",
+                color: "#000000",
+                lineHeight: "32px",
+                textTransform: "none",
+                letterSpacing: "normal",
+              }}
+            >
+              ••••••••••••••••
+            </Typography>
+          </>
+        )}
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 4,
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily:
+                "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+              fontWeight: 600,
+              fontSize: "20px",
+              color: "#000000",
+              lineHeight: "32px",
+              textTransform: "none",
+              letterSpacing: "normal",
+            }}
+          >
+            Numéro de téléphone
+          </Typography>
+        </Box>
+        <TextField
+          label="Numéro de téléphone"
+          variant="outlined"
+          required
+          fullWidth
+          sx={{ mt: 1 }}
+          value={phoneNumber}
+          onChange={(e) => setPhoneNumber(e.target.value)}
+        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 4,
+          }}
+        >
+          <Typography
+            sx={{
+              fontFamily:
+                "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+              fontWeight: 600,
+              fontSize: "20px",
+              color: "#000000",
+              lineHeight: "32px",
+              textTransform: "none",
+              letterSpacing: "normal",
+            }}
+          >
+            Date de naissance
+          </Typography>
+        </Box>
+        <LocalizationProvider
+          dateAdapter={AdapterDayjs}
           sx={{ width: "100%", mt: 1 }}
-          label="Date de naissance"
-          value={dateOfBirth}
-          onChange={handleDateChange}
-          renderInput={(params) => <TextField {...params} fullWidth />}
-          inputFormat="DD/MM/YYYY"
-        />
-      </LocalizationProvider>
-      <Typography
-        sx={{
-          fontFamily: "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-          fontWeight: 600,
-          fontSize: "20px",
-          color: "#000000",
-          lineHeight: "32px",
-          textTransform: "none",
-          letterSpacing: "normal",
-          mt: 4,
-        }}
-      >
-        Lieu
-      </Typography>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "row",
-          mt: 1,
-          width: "100%",
-        }}
-      >
-        <TextField
-          label="Pays/Région"
-          variant="outlined"
-          required
-          fullWidth
-          sx={{ width: "49%" }}
-          value={pays}
-          onChange={(e) => setPays(e.target.value)}
-        />
-        <TextField
-          label="Province"
-          variant="outlined"
-          required
-          fullWidth
-          sx={{ width: "49%" }}
-          value={province}
-          onChange={(e) => setProvince(e.target.value)}
-        />
-      </Box>
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          flexDirection: "row",
-          mt: 1,
-          width: "100%",
-        }}
-      >
-        <TextField
-          label="Ville"
-          variant="outlined"
-          required
-          fullWidth
-          sx={{ width: "49%" }}
-          value={ville}
-          onChange={(e) => setVille(e.target.value)}
-        />
-        <TextField
-          label="Code Postal"
-          variant="outlined"
-          required
-          fullWidth
-          sx={{ width: "49%" }}
-          value={codePostale}
-          onChange={(e) => setCodePostale(e.target.value)}
-        />
-      </Box>
-      <TextField
-        label="Adresse Postal"
-        variant="outlined"
-        required
-        fullWidth
-        sx={{ mt: 1 }}
-        value={adresse}
-        onChange={(e) => setAdresse(e.target.value)}
-      />
-      <TextField
-        label="Appartement, suite, bâtiment"
-        variant="outlined"
-        required
-        fullWidth
-        sx={{ mt: 1 }}
-        value={adresseComplement}
-        onChange={(e) => setAdresseComplement(e.target.value)}
-      />
-      <Divider
-        orientation="horizontal"
-        flexItem
-        sx={{ color: "#000", mt: 4 }}
-      />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 1.5,
-        }}
-      >
+        >
+          <DatePicker
+            sx={{ width: "100%", mt: 1 }}
+            label="Date de naissance"
+            value={dateOfBirth}
+            onChange={handleDateChange}
+            renderInput={(params) => <TextField {...params} fullWidth />}
+            inputFormat="DD/MM/YYYY"
+          />
+        </LocalizationProvider>
         <Typography
           sx={{
-            fontFamily:
-              "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+            fontFamily: "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
             fontWeight: 600,
             fontSize: "20px",
             color: "#000000",
             lineHeight: "32px",
             textTransform: "none",
             letterSpacing: "normal",
+            mt: 4,
           }}
         >
-          Supprimer le compte
+          Lieu
         </Typography>
-        <Button
-          onClick={() => handleDeleteUser(user._id)}
+        <Box
           sx={{
-            border: "1px solid #111111",
-            color: " #111111",
-            borderRadius: "20px",
-            height: "38px",
-            width: "18%",
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row",
+            mt: 1,
+            width: "100%",
+          }}
+        >
+          <TextField
+            label="Pays/Région"
+            variant="outlined"
+            required
+            fullWidth
+            sx={{ width: "49%" }}
+            value={pays}
+            onChange={(e) => setPays(e.target.value)}
+          />
+          <TextField
+            label="Province"
+            variant="outlined"
+            required
+            fullWidth
+            sx={{ width: "49%" }}
+            value={province}
+            onChange={(e) => setProvince(e.target.value)}
+          />
+        </Box>
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            flexDirection: "row",
+            mt: 1,
+            width: "100%",
+          }}
+        >
+          <TextField
+            label="Ville"
+            variant="outlined"
+            required
+            fullWidth
+            sx={{ width: "49%" }}
+            value={ville}
+            onChange={(e) => setVille(e.target.value)}
+          />
+          <TextField
+            label="Code Postal"
+            variant="outlined"
+            required
+            fullWidth
+            sx={{ width: "49%" }}
+            value={codePostale}
+            onChange={(e) => setCodePostale(e.target.value)}
+          />
+        </Box>
+        <TextField
+          label="Adresse Postal"
+          variant="outlined"
+          required
+          fullWidth
+          sx={{ mt: 1 }}
+          value={adresse}
+          onChange={(e) => setAdresse(e.target.value)}
+        />
+        <TextField
+          label="Appartement, suite, bâtiment"
+          variant="outlined"
+          required
+          fullWidth
+          sx={{ mt: 1 }}
+          value={adresseComplement}
+          onChange={(e) => setAdresseComplement(e.target.value)}
+        />
+        <Divider
+          orientation="horizontal"
+          flexItem
+          sx={{ color: "#000", mt: 4 }}
+        />
+        <Box
+          sx={{
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 1.5,
           }}
         >
           <Typography
             sx={{
-              display: "flex",
               fontFamily:
                 "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
               fontWeight: 600,
-              fontSize: "14px",
+              fontSize: "20px",
+              color: "#000000",
+              lineHeight: "32px",
               textTransform: "none",
+              letterSpacing: "normal",
             }}
           >
-            Supprimer
+            Supprimer le compte
           </Typography>
-        </Button>
-      </Box>
-      <Divider
-        orientation="horizontal"
-        flexItem
-        sx={{ color: "#000", mt: 1.5 }}
-      />
-      <Box
-        sx={{
-          display: "flex",
-          flexDirection: "row",
-          justifyContent: "space-between",
-          mt: 1.5,
-        }}
-      >
-        <Typography
+          <Button
+            onClick={() => handleDeleteUser(user._id)}
+            sx={{
+              border: "1px solid #111111",
+              color: " #111111",
+              borderRadius: "20px",
+              height: "38px",
+              width: "18%",
+            }}
+          >
+            <Typography
+              sx={{
+                display: "flex",
+                fontFamily:
+                  "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+                fontWeight: 600,
+                fontSize: "14px",
+                textTransform: "none",
+              }}
+            >
+              Supprimer
+            </Typography>
+          </Button>
+        </Box>
+        <Divider
+          orientation="horizontal"
+          flexItem
+          sx={{ color: "#000", mt: 1.5 }}
+        />
+        <Box
           sx={{
-            fontFamily:
-              "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-            fontWeight: 600,
-            fontSize: "20px",
-            color: "#000000",
-            lineHeight: "32px",
-            textTransform: "none",
-            letterSpacing: "normal",
-          }}
-        >
-          Fonctionnalité administrateur
-        </Typography>
-        <Button
-          onClick={() => navigate("/admin")}
-          sx={{
-            border: "1px solid #111111",
-            color: " #111111",
-            borderRadius: "20px",
-            height: "38px",
-            width: "18%",
+            display: "flex",
+            flexDirection: "row",
+            justifyContent: "space-between",
+            mt: 1.5,
           }}
         >
           <Typography
             sx={{
-              display: "flex",
               fontFamily:
                 "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
               fontWeight: 600,
-              fontSize: "14px",
+              fontSize: "20px",
+              color: "#000000",
+              lineHeight: "32px",
               textTransform: "none",
+              letterSpacing: "normal",
             }}
           >
-            Admin
+            Fonctionnalité administrateur
           </Typography>
-        </Button>
-      </Box>
-      <Divider
-        orientation="horizontal"
-        flexItem
-        sx={{ color: "#000", mt: 1.5 }}
-      />
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "flex-end",
-          width: "1OO%",
-          mt: 4,
-          mb: 4,
-        }}
-      >
-        <Button
-          onClick={handleSaveInfo}
+          <Button
+            onClick={() => {
+
+              if (user.isAdmin)
+                navigate("/admin");
+              else setOpen(true);
+            }}
+            sx={{
+              border: "1px solid #111111",
+              color: " #111111",
+              borderRadius: "20px",
+              height: "38px",
+              width: "18%",
+            }}
+          >
+            <Typography
+              sx={{
+                display: "flex",
+                fontFamily:
+                  "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+                fontWeight: 600,
+                fontSize: "14px",
+                textTransform: "none",
+              }}
+            >
+              Admin
+            </Typography>
+          </Button>
+        </Box>
+        <Divider
+          orientation="horizontal"
+          flexItem
+          sx={{ color: "#000", mt: 1.5 }}
+        />
+        <Box
           sx={{
-            backgroundColor: "#111111",
-            color: " #FFF",
-            borderRadius: "20px",
-            height: "38px",
-            width: "18%",
-            "&:hover": {
+            display: "flex",
+            justifyContent: "flex-end",
+            width: "1OO%",
+            mt: 4,
+            mb: 4,
+          }}
+        >
+          <Button
+            onClick={handleSaveInfo}
+            sx={{
               backgroundColor: "#111111",
               color: " #FFF",
-            },
-          }}
-        >
-          <Typography
-            sx={{
-              display: "flex",
-              fontFamily:
-                "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
-              fontWeight: 600,
-              fontSize: "14px",
-              textTransform: "none",
+              borderRadius: "20px",
+              height: "38px",
+              width: "18%",
+              "&:hover": {
+                backgroundColor: "#111111",
+                color: " #FFF",
+              },
             }}
           >
-            Enregistrer
-          </Typography>
-        </Button>
+            <Typography
+              sx={{
+                display: "flex",
+                fontFamily:
+                  "Helvetica Now Text Medium, Helvetica, Arial, sans-serif",
+                fontWeight: 600,
+                fontSize: "14px",
+                textTransform: "none",
+              }}
+            >
+              Enregistrer
+            </Typography>
+          </Button>
+        </Box>
       </Box>
-    </Box>
+    </>
   );
 };
 

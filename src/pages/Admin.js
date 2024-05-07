@@ -1,12 +1,16 @@
 import { Box, Container, Tab, Tabs, Typography } from "@mui/material";
-import React from "react";
+import React, { useEffect } from "react";
 import NavBar from "../components/Navigation/NavBar";
-import PlanelAddProduct from "../components/Products/planelAddProduct";
-import PlanelShowProduct from "../components/Products/planelShowProduct";
-import PlanelShowUser from "../components/Products/planelShowUser";
+import PlanelAddProduct from "../components/Player/planelAddProduct";
+import PlanelShowProduct from "../components/Player/planelShowProduct";
+import PlanelShowUser from "../components/Player/planelShowUser";
+import { useNavigate } from "react-router-dom";
+import { useSelector, useDispatch } from "react-redux";
+import { selectUserConnected, profileUser } from "../redux/slice/UserConnected";
 
 function CustomTabPanel(props) {
   const { children, value, index, ...other } = props;
+
 
   return (
     <div
@@ -33,6 +37,27 @@ function a11yProps(index) {
 }
 
 const Admin = () => {
+
+  const navigate = useNavigate();
+  const user = useSelector(selectUserConnected);
+  const dispatch = useDispatch();
+  const token = localStorage.getItem("token");
+
+  useEffect(() => {
+    if (token && !user) {
+      dispatch(profileUser(token));
+    }
+  }, [dispatch, token, user]);
+
+  useEffect(() => {
+    if (!user?.isAdmin) {
+      navigate("/");
+    }
+  })
+  useEffect(() => {
+
+    if (!token) navigate("/");
+  }, [])
   const [value, setValue] = React.useState(0);
 
   const handleChange = (event, newValue) => {
@@ -75,18 +100,18 @@ const Admin = () => {
             onChange={handleChange}
             aria-label="basic tabs example"
           >
-            <Tab label="Ajouter un Produit" {...a11yProps(0)} />
-            <Tab label="Voir les Produits" {...a11yProps(1)} />
+            <Tab label="Ajouter un Joueur" {...a11yProps(0)} />
+            <Tab label="Voir les joueurs" {...a11yProps(1)} />
             <Tab label="Voir les Utilisateurs" {...a11yProps(2)} />
           </Tabs>
         </Box>
-        <CustomTabPanel value={value} index={0} style={{ width: '100%'}}>
+        <CustomTabPanel value={value} index={0} style={{ width: '100%' }}>
           <PlanelAddProduct />
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={1} style={{ width: '100%'}}>
+        <CustomTabPanel value={value} index={1} style={{ width: '100%' }}>
           <PlanelShowProduct />
         </CustomTabPanel>
-        <CustomTabPanel value={value} index={2} style={{ width: '100%'}}>
+        <CustomTabPanel value={value} index={2} style={{ width: '100%' }}>
           <PlanelShowUser />
         </CustomTabPanel>
       </Container>
